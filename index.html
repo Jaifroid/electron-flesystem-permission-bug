@@ -5,15 +5,37 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
     <link href="./styles.css" rel="stylesheet">
-    <title>Hello World!</title>
+    <script type="module" src="./renderer.js"></script>
+    <title>File System API Regression Test</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    <h1>File System API Regression Test</h1>
+    <p>
+      Instructions:  Firstly, ensure you have configured Electron Fiddle's execute
+      options to keep the user data directories.
+    </p>
+    <p>
+      Hit the button to choose a directory.  It must not be a 'special' directory,
+      such as your documents or downloads folder.  Make a new folder if in doubt.
+    </p>
+    <p>
+      You should see your directory name, and it should say 'granted' for writable
+      status.  Now, close the app and run it again.  Your directory should still
+      be there, and it should still say 'granted'.  If it says 'prompt', then you
+      know this test has failed, because there is no way to prompt the user or override
+      this permission requirement currently.
+    </p>
 
-    <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
+    <button data-action="setDir">Choose Directory</button>
+    <hr/>
+    <p>
+      Directory: <span class="dir"></span><br/>
+      Writable: <span class="writable"></span>
+    </p>
+    <footer>
+      Node.js <span id="node-version"></span>,
+      Chromium <span id="chrome-version"></span>,
+      Electron <span id="electron-version"></span>
+    </footer>
   </body>
 </html>
