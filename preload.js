@@ -12,7 +12,13 @@ window.addEventListener('DOMContentLoaded', () => {
     if (element) element.innerText = text
   }
 
-  for (const type of ['chrome', 'node', 'electron']) {
-    replaceText(`${type}-version`, process.versions[type])
+  // Only show versions if process.versions exists (Electron context)
+  if (typeof process !== 'undefined' && process.versions) {
+    for (const type of ['chrome', 'node', 'electron']) {
+      replaceText(`${type}-version`, process.versions[type])
+    }
+  } else {
+    // Browser context - hide version info or show browser info
+    document.querySelector('footer').style.display = 'none'
   }
 })
