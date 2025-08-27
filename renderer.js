@@ -75,10 +75,13 @@ async function refreshDir() {
   const writableElement = document.querySelector('.writable');
   writableElement.textContent = permissionStatus + errorInfo;
   
+  // Reset classes
+  writableElement.classList.remove('error-text', 'granted-text');
+  
   if (errorInfo) {
     writableElement.classList.add('error-text');
-  } else {
-    writableElement.classList.remove('error-text');
+  } else if (permissionStatus === 'granted') {
+    writableElement.classList.add('granted-text');
   }
 }
 

@@ -17,3 +17,13 @@ footer {
   color: red;
   font-weight: bold;
 }
+
+.granted-text {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.granted-text::before {
+  content: "✓ ";
+  font-size: 1.1em;
+}
