@@ -57,6 +57,7 @@ async function refreshDir() {
   if (dir) {
     try {
       // Request permission for the stored directory handle to restore persistent permissions
+      // BUG: This throws SecurityError in Electron, but should succeed if permissions were previously granted
       await dir.requestPermission({ mode: 'readwrite' });
       permissionStatus = await dir.queryPermission({ mode: 'readwrite' });
     } catch (error) {
