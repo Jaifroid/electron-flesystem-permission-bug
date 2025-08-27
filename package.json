@@ -7,10 +7,12 @@
   "version": "1.0.0",
   "author": "Brad Isbell",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "serve": "http-server . -p 8080 -o"
   },
   "dependencies": {},
   "devDependencies": {
-    "electron": "31.2.1"
+    "electron": "31.2.1",
+    "http-server": "^14.1.1"
   }
 }
