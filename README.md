@@ -8,11 +8,14 @@ When an Electron app tries to request permissions for a previously stored direct
 
 ## How to reproduce
 
-1. Run the app: `npm start`
-2. Click "Choose Directory" and select a folder
-3. Note it shows "granted" permission status
-4. Close and restart the app
-5. The directory is remembered but shows "prompt (SecurityError: User activation required)" in red
+1. Clone the repo
+2. Delete the existing electron -> dist folder in node_modules
+3. Add the dist folder from the artefact you wish to test
+4. Run the app: `npm start`
+5. Click "Choose Directory" and select a folder
+6. Note it shows "granted" permission status
+7. Close and restart the app
+8. The directory is remembered but shows "prompt (SecurityError: User activation required)" in red if the bug is still present in the version of Electron you are testing.
 
 ## Attribution
 
