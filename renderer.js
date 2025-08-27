@@ -51,9 +51,34 @@ document.querySelector('[data-action="setDir"]').addEventListener('click', async
 
 async function refreshDir() {
   const dir = await Directories.getBaseDir();
+  let permissionStatus = '';
+  let errorInfo = '';
+
+  if (dir) {
+    try {
+      // Request permission for the stored directory handle to restore persistent permissions
+      await dir.requestPermission({ mode: 'readwrite' });
+      permissionStatus = await dir.queryPermission({ mode: 'readwrite' });
+    } catch (error) {
+      console.error('Failed to request permission:', error);
+      permissionStatus = await dir.queryPermission({ mode: 'readwrite' });
+      if (error instanceof DOMException && error.name === 'SecurityError') {
+        errorInfo = ' (SecurityError: User activation required)';
+      } else {
+        errorInfo = ` (Error: ${error.message})`;
+      }
+    }
+  }
 
   document.querySelector('.dir').textContent = dir?.name || '[not set]';
-  document.querySelector('.writable').textContent = (await dir?.queryPermission({ mode: 'readwrite' })) || '';
+  const writableElement = document.querySelector('.writable');
+  writableElement.textContent = permissionStatus + errorInfo;
+  
+  if (errorInfo) {
+    writableElement.classList.add('error-text');
+  } else {
+    writableElement.classList.remove('error-text');
+  }
 }
 
 refreshDir();

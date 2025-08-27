@@ -12,3 +12,8 @@ footer {
   font-size: 0.8em;
   color: #666;
 }
+
+.error-text {
+  color: red;
+  font-weight: bold;
+}
