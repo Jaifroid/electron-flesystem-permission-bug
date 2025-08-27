@@ -28,6 +28,7 @@ When an Electron app tries to request permissions for a previously stored direct
 5. Note it shows "granted" permission status with a green checkmark
 6. Refresh the page or close and reopen the tab
 7. The directory should still be remembered and show "granted" status (this is the correct behavior that should also work in Electron)
+8. **Depending on the browser, the page may display the security error in the browser thie first or second time you restart.** This is because the user hasn't yet granted persistent permsissions, and some browsers only prompt for this the second or third time of picking a directory. Just pick the directory again, and when prompted for persistent permissions, grant "Always".
 
 ## Attribution
 
