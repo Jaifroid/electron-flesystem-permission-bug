@@ -25,9 +25,13 @@
       have been granted by the user.
     </p>
     <p>
-      If it says 'prompt' with a security error in red informing you that user activation is required (a click, for example).
+      If it says 'prompt' with a security error in red informing you that user activation is required (a click, for example),
+      then persistent permission has <b>not been granted</b>.
+    </p>
+    <p>
       If this happens in <b>Browser context</b>, then try picking the folder again, until the Browser prompts you to grant
-      persistent permissions (may need two tries, restarting the app in-between).
+      persistent permissions (may need two tries, restarting the app in-between). Ensure you select 'Always' when prompted for
+      persistent permissions.
     </p>
     <p>
       In <b>Electron context</b>, no prompt is ever shown to the user by default, and there is currently no way to override
