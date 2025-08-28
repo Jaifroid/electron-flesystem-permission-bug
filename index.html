@@ -12,31 +12,33 @@
   <body>
     <h1>File System API Regression Test</h1>
     <p>
-      Instructions: Ensure you run this test in <b>Electron</b> or in a <b>Chromium-based</b> browser (e.g. Chrome, Edge).
+        Instructions: Ensure you run this test in <b>Electron</b> or in a <b>Chromium-based</b> browser (e.g. Chrome, Edge).
     </p>
-    <p>
-      Hit the button to choose a directory.  It must not be a 'special' directory,
-      such as your documents or downloads folder.  Make a new folder if in doubt.
-    </p>
-    <p>
-      You should see your directory name, and it should say 'granted' in green for writable
-      status.  Now, close the app and run it again.  Your directory should still
-      be there, and it should still say 'granted' if the test has passed and persistent permissions
-      have been granted by the user.
-    </p>
-    <p>
-      If it says 'prompt' with a security error in red informing you that user activation is required (a click, for example),
-      then persistent permission has <b>not been granted</b>.
-    </p>
-    <p>
-      If this happens in <b>Browser context</b>, then try picking the folder again, until the Browser prompts you to grant
-      persistent permissions (may need two tries, restarting the app in-between). Ensure you select 'Always' when prompted for
-      persistent permissions.
-    </p>
-    <p>
-      In <b>Electron context</b>, no prompt is ever shown to the user by default, and there is currently no way to override
-      the need for user activation.
-    </p>
+    <ol>
+      <li>
+        Hit the button to choose a directory.  It must not be a 'special' directory,
+        such as your documents or downloads folder.  Make a new folder if in doubt.
+      </li>
+      <li>
+        You should see your directory name, and it should say 'granted' in green for writable
+        status.  Now, close the app and run it again.  Your directory should still
+        be there, and it should still say 'granted' if the test has passed and persistent permissions
+        have been granted by the user.
+      </li>
+      <li>
+        If it says 'prompt' with a security error in red informing you that user activation is required (a click, for example),
+        then persistent permission has <b>not been granted</b>.
+      </li>
+      <li>
+        If this happens in <b>Browser context</b>, then try picking the folder again, until the Browser prompts you to grant
+        persistent permissions (may need two tries, restarting the app in-between). Ensure you select 'Always' when prompted for
+        persistent permissions.
+      </li>
+      <li>
+        In <b>Electron context</b>, no prompt is ever shown to the user by default, and there is currently no way to override
+        the need for user activation.
+      </li>
+    </ol>
 
     <button data-action="setDir">Choose Directory</button>
     <hr/>
