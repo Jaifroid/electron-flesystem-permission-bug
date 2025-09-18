@@ -10,9 +10,23 @@
     <title>File System API Regression Test</title>
   </head>
   <body>
-    <h1>File System API Regression Test</h1>
+    <h1>File System Access API Persistent Permissions Test</h1>
     <p>
-        Instructions: Ensure you run this test in <b>Electron</b> or in a <b>Chromium-based</b> browser (e.g. Chrome, Edge).
+        This test demonstrates persistent filesystem permissions working in <b>Electron nightly</b>
+        (requires PR <a href="https://github.com/electron/electron/pull/48170">#48170</a>).
+        Also works in <b>Chromium-based</b> browsers (Chrome, Edge).
+    </p>
+
+    <button data-action="setDir">Choose Directory</button>
+    <hr/>
+    <p>
+      Directory: <span class="dir"></span><br/>
+      Writable: <span class="writable"></span>
+    </p>
+    <hr/>
+    <p>
+        <strong>For Electron testing:</strong> Install nightly with <code>npm install electron-nightly</code>
+        and update package.json start script to <code>"start": "npx electron-nightly ."</code>
     </p>
     <ol>
       <li>
@@ -38,17 +52,28 @@
         persistent permissions.
       </li>
       <li>
-        In <b>Electron context</b>, no prompt is ever shown to the user by default, and there is currently no way to override
-        the need for user activation.
+        In <b>Electron nightly</b> (40.x+), persistent permissions now work correctly when both
+        <code>setPermissionRequestHandler()</code> and <code>setPermissionCheckHandler()</code> are implemented
+        in the main process. See main.js for the complete implementation.
       </li>
     </ol>
 
-    <button data-action="setDir">Choose Directory</button>
-    <hr/>
-    <p>
-      Directory: <span class="dir"></span><br/>
-      Writable: <span class="writable"></span>
-    </p>
+    <details>
+      <summary><strong>Developer Setup Instructions for Electron Nightly</strong> (<i>expand for details</i>)</summary>
+      <ol>
+        <li>Install Electron nightly: <code>npm install electron-nightly</code></li>
+        <li>Update package.json start script: <code>"start": "npx electron-nightly ."</code></li>
+        <li>Implement both session handlers in main.js:
+          <ul>
+            <li><code>session.defaultSession.setPermissionRequestHandler()</code> - for initial requests</li>
+            <li><code>session.defaultSession.setPermissionCheckHandler()</code> - for persistent permissions</li>
+          </ul>
+        </li>
+        <li>Run with <code>npm start</code> to test persistent permissions</li>
+      </ol>
+      <p><em>This test case demonstrates the fix from PR #48170 working correctly in Electron nightly 40.x+</em></p>
+    </details>
+
     <footer>
       Node.js <span id="node-version"></span>,
       Chromium <span id="chrome-version"></span>,

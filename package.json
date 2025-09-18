@@ -7,10 +7,12 @@
   "version": "1.0.0",
   "author": "Brad Isbell",
   "scripts": {
-    "start": "electron .",
+    "start": "npx electron-nightly .",
     "serve": "http-server . -p 8080 -o"
   },
-  "dependencies": {},
+  "dependencies": {
+    "electron-nightly": "^40.0.0-nightly.20250916"
+  },
   "devDependencies": {
     "electron": "31.2.1",
     "http-server": "^14.1.1"

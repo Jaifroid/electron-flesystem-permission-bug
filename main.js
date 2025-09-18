@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, session } = require('electron')
 const path = require('node:path')
 
 function createWindow () {
@@ -23,9 +23,37 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  // Enable File System Access
-  // https://wicg.github.io/file-system-access/
-  app.commandLine.appendSwitch('enable-experimental-web-platform-features');
+  // Set up filesystem permission request handler (for NEW permission requests)
+  session.defaultSession.setPermissionRequestHandler((webContents, permission, callback, details) => {
+    console.log('Permission request received (NEW):');
+    console.log('  Permission type:', permission);
+    console.log('  Origin:', webContents.getURL());
+    console.log('  Details:', details);
+
+    if (permission === 'fileSystem') {
+      console.log('  -> Granting NEW filesystem permission');
+      callback(true);
+    } else {
+      console.log('  -> Denying permission (not filesystem)');
+      callback(false);
+    }
+  });
+
+  // Set up filesystem permission check handler (for PERSISTENT/STORED permissions)
+  session.defaultSession.setPermissionCheckHandler((webContents, permission, origin, details) => {
+    console.log('Permission check received (PERSISTENT):');
+    console.log('  Permission type:', permission);
+    console.log('  Origin:', origin);
+    console.log('  Details:', details);
+
+    if (permission === 'fileSystem') {
+      console.log('  -> Granting PERSISTENT filesystem permission');
+      return true; // Note: return value, not callback
+    } else {
+      console.log('  -> Denying permission (not filesystem)');
+      return false;
+    }
+  });
 
   createWindow();
 
