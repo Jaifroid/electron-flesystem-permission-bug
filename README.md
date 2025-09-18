@@ -1,35 +1,60 @@
-# Electron File System API Permission Bug
+# File System Access API Persistent Permissions Test
 
-This repository demonstrates a bug with persistent permissions in Electron's File System Access API implementation.
+This test case demonstrates **persistent filesystem permissions** working correctly in **Electron nightly** (40.x+) following the implementation in [PR #48170](https://github.com/electron/electron/pull/48170).
 
-## Issue
+## What This Tests
 
-When an Electron app tries to request permissions for a previously stored directory handle on startup (without user activation), it throws a SecurityError: "User activation is required to request permissions." This prevents persistent permissions from working properly in Electron.
+- **File System Access API** persistent permissions in Electron
+- **IndexedDB storage** of directory handles across app restarts
+- **Session permission handlers** for both initial and persistent permission requests
+- **No user activation required** for accessing previously granted permissions
 
-## How to reproduce
+## Quick Start
 
-### Testing in Electron
-1. Clone the repo
-2. Delete the existing electron -> dist folder in node_modules
-3. Add the dist folder from the artefact you wish to test
-4. Run the app: `npm start`
-5. Click "Choose Directory" and select a folder
-6. Note it shows "granted" permission status with a green checkmark
-7. Close and restart the app
-8. The directory is remembered but shows "prompt (SecurityError: User activation required)" in red if the bug is still present in the version of Electron you are testing.
+1. **Install Electron nightly:**
+   ```bash
+   npm install electron-nightly
+   ```
 
-### Testing in Browser Context (Expected Behavior)
-**Note: Must be tested in a Chromium-based browser (Chrome, Edge, etc.) as Firefox doesn't support persistent permissions for File System Access API.**
+2. **Update package.json start script if necessary to use electron-nightly:**
+   ```json
+   {
+     "scripts": {
+       "start": "npx electron-nightly ."
+     }
+   }
+   ```
 
-1. Install dependencies: `npm install`
-2. Start the development server: `npm run serve`
-3. The app will open in your default browser at http://localhost:8080
-4. Click "Choose Directory" and select a folder
-5. Note it shows "granted" permission status with a green checkmark
-6. Refresh the page or close and reopen the tab
-7. The directory should still be remembered and show "granted" status (this is the correct behavior that should also work in Electron)
-8. **Depending on the browser, the page may display the security error in the browser thie first or second time you restart.** This is because the user hasn't yet granted persistent permsissions, and some browsers only prompt for this the second or third time of picking a directory. Just pick the directory again, and when prompted for persistent permissions, grant "Always".
+3. **Run the test:**
+   ```bash
+   npm start
+   ```
 
-## Attribution
+## How It Works
 
-Based on [bradisbell's gist](https://gist.github.com/bradisbell/86ae72ea9709c471a0c4f49fea9dd0e0) with modifications to demonstrate the permission bug more clearly.
+The implementation requires **both session handlers** in `main.js`:
+
+- `session.defaultSession.setPermissionRequestHandler()` - handles initial permission requests
+- `session.defaultSession.setPermissionCheckHandler()` - handles persistent permission checks
+
+When a stored directory handle calls `queryPermission()`, it triggers the **check handler** rather than requiring new user activation.
+
+## Test Steps
+
+1. Click "Choose Directory" and select a folder
+2. Verify it shows "granted" status in green
+3. **Restart the app**
+4. The directory should still be there with "granted" status ✅
+
+If you see "prompt" with a SecurityError, persistent permissions are not working.
+
+## Browser Support
+
+- ✅ **Electron (nightly) (40.x+)** - with proper session handlers
+- ✅ **Chrome/Edge** - with native persistent permissions support
+
+## Related
+
+- **Original issue:** [electron/electron#41957](https://github.com/electron/electron/issues/41957)
+- **Implementation PR:** [electron/electron#48170](https://github.com/electron/electron/pull/48170)
+- **File System Access API:** [MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API)
